@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-low": "#f5f1ea", "error": "#b83230", "primary-container": "#78a886", "tertiary-container": "#c4a66a", "background": "#faf6f0", "on-error": "#ffffff", "primary": "#4a7c59", "surface-container-highest": "#e4e0d8", "on-surface": "#2e3230", "tertiary": "#705c30", "tertiary-fixed": "#f8e0a8", "surface-bright": "#faf6f0", "surface-container-lowest": "#ffffff", "on-primary-container": "#d8f0de", "secondary-fixed": "#f0e8db", "surface-tint": "#4a7c59", "on-tertiary-fixed-variant": "#554020", "inverse-surface": "#2e3230", "primary-fixed": "#c8e8d0", "surface-container": "#f0ece4", "surface-variant": "#e4e0d8", "secondary-fixed-dim": "#d4ccbf", "secondary": "#6b6358", "on-primary-fixed": "#002110", "on-tertiary-container": "#554020", "on-primary-fixed-variant": "#2a6038", "on-secondary-container": "#5e5548", "on-secondary": "#ffffff", "on-tertiary-fixed": "#221a05", "outline-variant": "#c4c8bc", "on-surface-variant": "#4a4e4a", "on-error-container": "#690005", "inverse-on-surface": "#f5f0e8", "secondary-container": "#f0e8db", "surface-dim": "#dbd7cf", "surface": "#faf6f0", "primary-fixed-dim": "#8ecf9e", "on-tertiary": "#ffffff", "on-secondary-fixed-variant": "#4a4538", "outline": "#74796e", "inverse-primary": "#8ecf9e", "tertiary-fixed-dim": "#dcc48e", "surface-container-high": "#eae6de", "on-secondary-fixed": "#1e1a13", "error-container": "#ffdad8", "on-background": "#2e3230", "on-primary": "#ffffff" }, "borderRadius": { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" }, "spacing": {}, "fontFamily": { "headline": [ "Literata" ], "display": [ "Literata" ], "body": [ "Nunito Sans" ], "label": [ "Nunito Sans" ] }, "fontSize": {} } } }</script></head><body class="bg-surface font-body text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(46,50,48,0.05)]"><div class="h-20 max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between"><div class="flex items-center gap-3"><a href="../home_portofolio_utama/code.html" class="font-headline font-semibold text-xl tracking-tight text-on-surface hover:text-primary transition-colors">sey-journal</a></div><nav class="hidden md:flex items-center gap-2 p-1 bg-surface-container-low rounded-xl" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold rounded-lg"><a class="px-4 py-2 text-sm text-on-surface-variant hover:text-on-surface transition-colors rounded-lg" data-path="home" href="../home_portofolio_utama/code.html">Home</a><a class="px-4 py-2 text-sm text-on-surface-variant hover:text-on-surface transition-colors rounded-lg" data-path="about" href="../about_me_profil_perjalanan/code.html">About</a><a class="px-4 py-2 text-sm text-on-surface-variant hover:text-on-surface transition-colors rounded-lg" data-path="kegiatan" href="../kegiatan_portofolio_karya/code.html">Kegiatan</a><a class="px-4 py-2 text-sm text-on-surface-variant hover:text-on-surface transition-colors rounded-lg" data-path="jurnal" href="../jurnal_artikel_pemikiran/code.html">Artikel</a></nav></div></header><main class="w-full pt-20 bg-surface min-h-[calc(100vh-200px)]"><div class="flex flex-col w-full">
+<!-- Reading Progress Bar -->
+<div class="sticky top-20 z-40 w-full bg-surface-container/60 backdrop-blur-sm h-1">
+<div class="h-full bg-primary w-0 transition-all duration-150 ease-out" id="read-progress"></div>
+</div>
+<!-- Main Editorial Container -->
+<div class="max-w-4xl mx-auto px-6 lg:px-8 py-10 w-full">
+<!-- Navigation & Breadcrumb -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10 pb-6 border-b border-surface-container">
+<a class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-on-primary-fixed-variant transition-colors group" href="../jurnal_artikel_pemikiran/code.html">
+<span class="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1">west</span>
+        Kembali&nbsp;</a>
+
+</div>
+<!-- Article Header -->
+<header class="space-y-6 mb-12">
+<!-- Category Badge & Series Number -->
+<div class="flex flex-wrap items-center gap-3">
+
+
+</div>
+<!-- Main Headline -->
+<h1 class="font-headline text-3xl sm:text-4xl lg:text-5xl font-semibold text-on-surface leading-tight tracking-tight">
+        Seni Menemukan Irama Lambat: Mengapa Keheningan Menjadi Kemewahan Tertinggi Desain Modern
+      </h1>
+<!-- Reflective Subtitle -->
+<p class="font-headline italic text-lg sm:text-xl text-on-surface-variant leading-relaxed max-w-3xl">
+        Sebuah catatan personal mengenai perlunya melambat, merawat atensi di era informasi yang riuh, dan menemukan kembali ruang hening untuk berkarya secara utuh.
+      </p>
+<!-- Author Metadata & Utility Bar -->
+<div class="bg-surface-container-low border border-surface-container rounded-2xl p-4 sm:p-5 shadow-sm transition-all">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex items-center gap-3.5">
+      <button type="button" class="w-11 h-11 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-primary/90 transition-transform active:scale-95 shadow-sm shrink-0" aria-label="Putar narasi audio">
+        <span class="material-symbols-outlined text-2xl">play_arrow</span>
+      </button>
+      <div class="flex flex-col">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-base text-primary">graphic_eq</span>
+          <span class="text-sm font-semibold text-on-surface">Dengarkan Versi Audio</span>
+          
+        </div>
+        
+      </div>
+    </div>
+    <div class="flex items-center gap-3 self-end sm:self-center">
+      
+      <span class="text-xs font-mono text-on-surface-variant">01:24 / 05:42</span>
+    </div>
+  </div>
+  <div class="mt-3.5 flex items-center gap-2">
+    <div class="relative w-full h-1.5 bg-surface-container rounded-full overflow-hidden cursor-pointer group">
+      <div class="h-full bg-primary rounded-full w-[24%] transition-all"></div>
+    </div>
+  </div>
+</div><div class="pt-6 border-t border-surface-container flex flex-wrap items-center justify-between gap-6">
+<!-- Author Info -->
+<div class="flex items-center gap-4">
+
+<div>
+<div class="flex items-center gap-2">
+<span class="font-semibold text-on-surface text-base">Sey</span>
+
+</div>
+<div class="flex items-center gap-3 text-xs text-on-surface-variant mt-0.5">
+<time datetime="2024-05-18">18 Mei 2024</time>
+
+
+</div>
+</div>
+</div>
+<!-- Quick Interaction Actions -->
+<div class="flex items-center gap-2 bg-surface-container-low p-1.5 rounded-xl">
+
+
+<button class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-all relative" id="btn-copy-link" title="Salin Tautan">
+<span class="material-symbols-outlined text-xl">share</span>
+<span class="hidden absolute -top-8 px-2 py-1 bg-inverse-surface text-inverse-on-surface text-[11px] rounded shadow-md whitespace-nowrap" id="copy-toast">Tersalin!</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Editorial Hero Visual -->
+<figure class="mb-14 space-y-3">
+<div class="relative w-full aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden bg-surface-container shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Warm serene editorial desk scene in soft morning light, featuring a handcrafted ceramic cup of hot tea with rising steam, an open linen-covered journal with handwritten notes in fountain pen, wooden table, and quiet monstera foliage in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDn2HcKXGeOBJxi_Jm5jArNJMpsRc3urb2ablZKt-W_J67DLQFSlhbq3oM-t-ukvnu7uEhM02yfd2-FK0ayR9qrCDskxcr6Zuh5Y_hjNRmWQ_r6vDkIMsT3ppncYKml712DUXAqahcrSEM3PC3c1dcw9OI_NP5sNGpyrlApgREFgNizd98oriu1uCK2QRZhyiiBQzE9YQeQhv8E9WT0zhcxuQDqOIZdgtICUAGK9Gq1">
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/30 via-transparent to-transparent"></div>
+</div>
+<figcaption class="flex items-center justify-between text-xs text-on-surface-variant italic px-2">
+
+<span class="font-normal not-italic text-[11px] text-tertiary">Yogyakarta, 2024</span>
+</figcaption>
+</figure>
+<!-- Long-form Editorial Body -->
+<article class="text-on-surface leading-[1.8] space-y-8 tracking-normal transition-all duration-200 text-lg sm:text-xl" id="article-content">
+<!-- Lead Paragraph with Drop Cap -->
+<p class="text-lg sm:text-xl font-headline text-on-surface leading-relaxed">
+<span class="float-left text-5xl sm:text-6xl font-headline font-semibold text-primary leading-none mr-3 mt-1 select-none">A</span>
+        da kecenderungan aneh yang kita pelihara tanpa sadar beberapa tahun belakangan ini: keyakinan bahwa semakin cepat ritme hidup berputar, semakin bermakna pula apa yang kita hasilkan. Setiap kekosongan harus segera dijejali rangsangan, setiap jeda diisi ketukan jempol pada layar kaca, dan setiap sudut antarmuka digital dituntut melompat riuh merebut perhatian yang kian remuk redam.
+      </p>
+<p>
+        Kita lupa bahwa alam tidak pernah bergegas, namun segalanya mekar tepat pada musimnya. Di studio kecil ini, ketika aroma daun teh seduhan kedua memenuhi ruangan berkayu jati, saya kerap memandangi sketsa-sketsa antarmuka yang tertunda. Desain yang baik, sama seperti percakapan yang hangat, tidak pernah menuntut untuk segera disudahi. Ia membutuhkan ruang untuk bernapas, membiarkan mata pemakainya mengendap dalam ketenangan tanpa teror notifikasi merah yang mendesak.
+      </p>
+<!-- Signature Pull Quote -->
+
+<!-- Section 1 -->
+<section class="space-y-4 pt-4">
+
+
+
+</section>
+<!-- Mid-Article Imagery Grid -->
+
+<!-- Section 2 -->
+<section class="space-y-4">
+
+
+
+</section>
+<!-- Reflective Key Takeaways / Card -->
+
+<!-- Concluding Paragraph -->
+
+</article>
+<!-- Reader Interactions & Tags -->
+<div class="mt-14 pt-8 border-t border-surface-container space-y-6">
+<!-- Tags -->
+
+<!-- Action Buttons -->
+
+</div>
+<!-- Author Profile Card -->
+
+<!-- Previous & Next Article Navigation -->
+
+<!-- Related Reading Section -->
+
+</div>
+<!-- Interactive Logic for Reading Progress, Font Size & Bookmark -->
+<script>
+    (function() {
+      // Reading Progress Bar
+      window.addEventListener('scroll', function() {
+        const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        const progressBar = document.getElementById('read-progress');
+        if (progressBar) {
+          progressBar.style.width = scrolled + '%';
+        }
+      });
+
+      // Font Resizer Toggle
+      const fontBtn = document.getElementById('btn-font-toggle');
+      const articleContent = document.getElementById('article-content');
+      let isLarge = false;
+
+      if (fontBtn && articleContent) {
+        fontBtn.addEventListener('click', function() {
+          isLarge = !isLarge;
+          if (isLarge) {
+            articleContent.classList.remove('text-base', 'sm:text-lg');
+            articleContent.classList.add('text-lg', 'sm:text-xl');
+            fontBtn.classList.add('bg-primary', 'text-on-primary');
+            fontBtn.classList.remove('text-on-surface-variant');
+          } else {
+            articleContent.classList.remove('text-lg', 'sm:text-xl');
+            articleContent.classList.add('text-base', 'sm:text-lg');
+            fontBtn.classList.remove('bg-primary', 'text-on-primary');
+            fontBtn.classList.add('text-on-surface-variant');
+          }
+        });
+      }
+
+      // Bookmark Toggle
+      const bookmarkBtn = document.getElementById('btn-save-bookmark');
+      let bookmarked = false;
+      if (bookmarkBtn) {
+        bookmarkBtn.addEventListener('click', function() {
+          bookmarked = !bookmarked;
+          const icon = bookmarkBtn.querySelector('.material-symbols-outlined');
+          if (icon) {
+            if (bookmarked) {
+              icon.textContent = 'bookmark';
+              icon.style.fontVariationSettings = "'FILL' 1";
+              bookmarkBtn.classList.add('text-primary');
+            } else {
+              icon.textContent = 'bookmark_border';
+              icon.style.fontVariationSettings = "'FILL' 0";
+              bookmarkBtn.classList.remove('text-primary');
+            }
+          }
+        });
+      }
+
+      // Copy Link Actions
+      const copyBtns = [document.getElementById('btn-copy-link'), document.getElementById('btn-share-inline')];
+      const copyToast = document.getElementById('copy-toast');
+      
+      copyBtns.forEach(btn => {
+        if (btn) {
+          btn.addEventListener('click', function() {
+            navigator.clipboard.writeText(window.location.href).catch(() => {});
+            if (copyToast) {
+              copyToast.classList.remove('hidden');
+              setTimeout(() => {
+                copyToast.classList.add('hidden');
+              }, 2000);
+            }
+          });
+        }
+      });
+
+      // Heart / Applause Counter
+      const applauseBtn = document.getElementById('btn-applause');
+      const applauseCount = document.getElementById('applause-count');
+      let count = 142;
+      let hasLiked = false;
+
+      if (applauseBtn && applauseCount) {
+        applauseBtn.addEventListener('click', function() {
+          if (!hasLiked) {
+            count += 1;
+            hasLiked = true;
+            applauseBtn.classList.add('bg-primary-fixed');
+            const icon = applauseBtn.querySelector('.material-symbols-outlined');
+            if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+          } else {
+            count -= 1;
+            hasLiked = false;
+            applauseBtn.classList.remove('bg-primary-fixed');
+            const icon = applauseBtn.querySelector('.material-symbols-outlined');
+            if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+          }
+          applauseCount.textContent = count;
+        });
+      }
+    })();
+  </script>
+</div></main><footer class="w-full bg-surface-container-low shadow-[0_-1px_6px_rgba(46,50,48,0.03)] mt-6 py-6"><div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6"><div class="flex items-center gap-3"><span class="font-headline text-base font-semibold text-on-surface">sey-journal</span></div><p class="text-sm text-on-surface-variant">© 2024 sey-journal. when the stars appeared in February, we prayed</p><div class="flex items-center gap-6 text-sm text-on-surface-variant"></div></div></footer>
+
+
+</body></html>

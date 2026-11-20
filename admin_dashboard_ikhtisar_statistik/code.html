@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Admin Dashboard — Sey-Journal</title>
+  <meta content="web_dashboard" name="shell-type">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&family=Nunito+Sans:ital,opsz,wght@0,6..12,300..800;1,6..12,300..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    .tab-btn.active {
+      background-color: #78a886 !important;
+      color: #002110 !important;
+      font-weight: 600;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-low": "#f5f1ea",
+            "error": "#b83230",
+            "error-container": "#ffdad8",
+            "primary-container": "#78a886",
+            "tertiary-container": "#c4a66a",
+            "background": "#faf6f0",
+            "on-error": "#ffffff",
+            "primary": "#4a7c59",
+            "surface-container-highest": "#e4e0d8",
+            "on-surface": "#2e3230",
+            "tertiary": "#705c30",
+            "tertiary-fixed": "#f8e0a8",
+            "surface-bright": "#faf6f0",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-container": "#d8f0de",
+            "secondary-fixed": "#f0e8db",
+            "surface-tint": "#4a7c59",
+            "surface-container": "#f0ece4",
+            "surface-variant": "#e4e0d8",
+            "secondary": "#6b6358",
+            "outline-variant": "#c4c8bc",
+            "on-surface-variant": "#4a4e4a",
+            "surface": "#faf6f0",
+            "primary-fixed": "#c8e8d0"
+          },
+          fontFamily: {
+            headline: ["Literata", "serif"],
+            body: ["Nunito Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased min-h-screen">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed top-5 right-5 z-50 transform transition-all duration-300 translate-y-[-20px] opacity-0 pointer-events-none flex items-center gap-3 px-5 py-3.5 rounded-xl bg-surface-container-lowest shadow-lg border border-primary/20 text-on-surface text-sm font-medium">
+    <span class="material-symbols-outlined text-primary text-xl" id="toast-icon">check_circle</span>
+    <span id="toast-message">Perubahan berhasil disimpan!</span>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-low z-50 flex flex-col justify-between py-6 px-5 shadow-[2px_0_12px_rgba(46,50,48,0.03)] overflow-y-auto">
+    <div class="flex flex-col gap-6">
+      <div class="flex items-center gap-3 px-2">
+        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm">
+          <span class="material-symbols-outlined text-2xl">spa</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-headline font-semibold text-lg text-on-surface leading-tight">sey-journal</span>
+          <span class="text-xs text-secondary font-medium">Panel Pengelola Studio</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex flex-col gap-1.5" id="sidebar-nav">
+        <button onclick="switchTab('overview')" class="tab-btn active flex items-center gap-3 px-4 py-3 transition-all rounded-xl text-left text-on-surface hover:bg-surface-container" data-tab="overview">
+          <span class="material-symbols-outlined text-[20px]">space_dashboard</span>
+          <span class="text-sm font-medium">Ikhtisar & Statistik</span>
+        </button>
+        <button onclick="switchTab('kegiatan')" class="tab-btn flex items-center gap-3 px-4 py-3 transition-all rounded-xl text-left text-on-surface-variant hover:bg-surface-container hover:text-on-surface" data-tab="kegiatan">
+          <span class="material-symbols-outlined text-[20px]">event_note</span>
+          <span class="text-sm font-medium">Kelola Kegiatan</span>
+        </button>
+        <button onclick="switchTab('profile')" class="tab-btn flex items-center gap-3 px-4 py-3 transition-all rounded-xl text-left text-on-surface-variant hover:bg-surface-container hover:text-on-surface" data-tab="profile">
+          <span class="material-symbols-outlined text-[20px]">account_circle</span>
+          <span class="text-sm font-medium">Foto & Profil Saya</span>
+        </button>
+        <button onclick="switchTab('articles')" class="tab-btn flex items-center gap-3 px-4 py-3 transition-all rounded-xl text-left text-on-surface-variant hover:bg-surface-container hover:text-on-surface" data-tab="articles">
+          <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+          <span class="text-sm font-medium">Kelola Artikel / Jurnal</span>
+        </button>
+        <button onclick="switchTab('activities')" class="tab-btn flex items-center gap-3 px-4 py-3 transition-all rounded-xl text-left text-on-surface-variant hover:bg-surface-container hover:text-on-surface" data-tab="activities">
+          <span class="material-symbols-outlined text-[20px]">timeline</span>
+          <span class="text-sm font-medium">Kelola Aktivitas</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="flex flex-col gap-4 px-2 pt-6 border-t border-surface-container">
+      <a class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl bg-surface-container-high text-on-surface hover:bg-primary hover:text-on-primary transition-all text-sm font-semibold shadow-sm" href="../home_portofolio_utama/code.html" target="_blank">
+        <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+        <span>Lihat Web Publik</span>
+      </a>
+
+      <!-- Profile Thumbnail in Sidebar -->
+      <div class="flex flex-col gap-3 pt-2">
+        <div class="flex items-center gap-3">
+          <img id="sidebar-avatar" alt="Avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant/40" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80">
+          <div class="flex flex-col min-w-0">
+            <span id="sidebar-name" class="text-sm font-semibold text-on-surface truncate">Syakilla Purwana</span>
+            <span class="text-xs text-secondary truncate">Pengelola sey-journal</span>
+          </div>
+        </div>
+        <button onclick="handleLogout()" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-error hover:bg-error-container/40 transition-all">
+          <span class="material-symbols-outlined text-[18px]">logout</span>
+          <span>Keluar / Logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="pl-72">
+    <!-- Top Header -->
+    <header class="fixed top-0 left-72 right-0 h-16 bg-surface/85 backdrop-blur-xl z-40 flex items-center justify-between px-8 shadow-[0_1px_8px_rgba(46,50,48,0.04)] border-b border-outline-variant/20">
+      <div class="flex items-center gap-3">
+        <span class="text-xs uppercase tracking-wider text-secondary font-semibold font-headline">sey-journal • Panel Kendali Konten</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="handleResetData()" title="Kembalikan data contoh awal" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-secondary hover:text-error hover:bg-error-container text-xs font-semibold transition-all">
+          <span class="material-symbols-outlined text-sm">restart_alt</span>
+          <span>Reset Data Default</span>
+        </button>
+        <a href="../home_portofolio_utama/code.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-primary text-on-primary text-xs font-semibold hover:bg-primary/90 transition-all shadow-sm">
+          <span class="material-symbols-outlined text-sm">visibility</span>
+          <span>Buka Website</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="w-full pt-20 px-8 pb-16">
+
+      <!-- ================= SECTION 1: OVERVIEW TAB ================= -->
+      <section id="tab-overview" class="space-y-8">
+        <!-- Hero Banner -->
+        <div class="relative overflow-hidden rounded-2xl bg-surface-container-high p-8 shadow-sm">
+          <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-primary-fixed/30 blur-3xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="space-y-2 max-w-2xl">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5 animate-pulse"></span>
+                  Sistem Aktif & Terhubung
+                </span>
+              </div>
+              <h1 class="text-2xl lg:text-3xl font-headline font-semibold text-on-surface">
+                Selamat Datang di Studio Kurasi!
+              </h1>
+              <p class="text-on-surface-variant text-sm lg:text-base leading-relaxed">
+                Anda dapat mengubah foto profil, isi kegiatan portofolio, artikel jurnal, dan catatan aktivitas secara langsung dari tab di bawah ini.
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <button onclick="switchTab('kegiatan')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-semibold shadow-sm hover:bg-primary/90 transition-all">
+                <span class="material-symbols-outlined text-[20px]">add_circle</span>
+                <span>Tambah Kegiatan</span>
+              </button>
+              <button onclick="switchTab('profile')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-container-lowest text-on-surface text-sm font-semibold shadow-sm hover:bg-surface-container transition-all">
+                <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+                <span>Ganti Foto Saya</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+          <div class="rounded-xl bg-surface-container-lowest p-6 shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow" onclick="switchTab('kegiatan')">
+            <div class="flex items-center justify-between">
+              <div class="w-11 h-11 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[24px]">event_note</span>
+              </div>
+              <span class="text-xs font-semibold text-primary flex items-center gap-0.5">Kelola <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+            </div>
+            <div class="mt-4">
+              <span class="text-xs uppercase tracking-wider text-secondary font-bold">Total Kegiatan</span>
+              <div class="text-3xl font-headline font-bold text-on-surface mt-1" id="stat-kegiatan-count">0</div>
+              <p class="text-xs text-on-surface-variant mt-1">Item portofolio aktif</p>
+            </div>
+          </div>
+
+          <div class="rounded-xl bg-surface-container-lowest p-6 shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow" onclick="switchTab('articles')">
+            <div class="flex items-center justify-between">
+              <div class="w-11 h-11 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[24px]">auto_stories</span>
+              </div>
+              <span class="text-xs font-semibold text-primary flex items-center gap-0.5">Kelola <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+            </div>
+            <div class="mt-4">
+              <span class="text-xs uppercase tracking-wider text-secondary font-bold">Total Artikel</span>
+              <div class="text-3xl font-headline font-bold text-on-surface mt-1" id="stat-article-count">0</div>
+              <p class="text-xs text-on-surface-variant mt-1">Esai & tulisan pemikiran</p>
+            </div>
+          </div>
+
+          <div class="rounded-xl bg-surface-container-lowest p-6 shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow" onclick="switchTab('activities')">
+            <div class="flex items-center justify-between">
+              <div class="w-11 h-11 rounded-xl bg-surface-container-low flex items-center justify-center text-tertiary">
+                <span class="material-symbols-outlined text-[24px]">timeline</span>
+              </div>
+              <span class="text-xs font-semibold text-tertiary flex items-center gap-0.5">Kelola <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+            </div>
+            <div class="mt-4">
+              <span class="text-xs uppercase tracking-wider text-secondary font-bold">Aktivitas Terkini</span>
+              <div class="text-3xl font-headline font-bold text-on-surface mt-1" id="stat-activity-count">0</div>
+              <p class="text-xs text-on-surface-variant mt-1">Log & status kegiatan</p>
+            </div>
+          </div>
+
+          <div class="rounded-xl bg-surface-container-lowest p-6 shadow-sm flex flex-col justify-between cursor-pointer hover:shadow-md transition-shadow" onclick="switchTab('profile')">
+            <div class="flex items-center justify-between">
+              <div class="w-11 h-11 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[24px]">face</span>
+              </div>
+              <span class="text-xs font-semibold text-primary flex items-center gap-0.5">Edit <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+            </div>
+            <div class="mt-4">
+              <span class="text-xs uppercase tracking-wider text-secondary font-bold">Status Profil</span>
+              <div class="text-lg font-headline font-bold text-on-surface mt-1 truncate" id="stat-profile-name">Syakilla</div>
+              <p class="text-xs text-on-surface-variant mt-1">Foto & Bio Siap Tampil</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Jump Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col justify-between border border-outline-variant/30">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                <span class="material-symbols-outlined text-2xl">photo_camera</span>
+              </div>
+              <h3 class="font-headline font-bold text-lg text-on-surface mb-1">Foto & Identitas Saya</h3>
+              <p class="text-xs text-on-surface-variant leading-relaxed">Ganti foto potret utama Anda, ubah nama, bio pengantar, dan quote yang muncul di beranda serta laman Tentang Saya.</p>
+            </div>
+            <button onclick="switchTab('profile')" class="mt-6 w-full py-2.5 px-4 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface text-xs font-semibold transition-all">
+              Buka Pengaturan Foto & Profil
+            </button>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col justify-between border border-outline-variant/30">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                <span class="material-symbols-outlined text-2xl">post_add</span>
+              </div>
+              <h3 class="font-headline font-bold text-lg text-on-surface mb-1">Daftar Kegiatan</h3>
+              <p class="text-xs text-on-surface-variant leading-relaxed">Tambah kegiatan workshop, pameran, atau panggung bicara baru beserta gambar, tanggal, dan deskripsinya.</p>
+            </div>
+            <button onclick="switchTab('kegiatan')" class="mt-6 w-full py-2.5 px-4 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface text-xs font-semibold transition-all">
+              Buka Pengelola Kegiatan
+            </button>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-surface-container-lowest shadow-sm flex flex-col justify-between border border-outline-variant/30">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                <span class="material-symbols-outlined text-2xl">edit_note</span>
+              </div>
+              <h3 class="font-headline font-bold text-lg text-on-surface mb-1">Artikel & Tulisan</h3>
+              <p class="text-xs text-on-surface-variant leading-relaxed">Tulis atau perbarui esai, renungan, dan artikel pemikiran Anda yang ditampilkan di ruang publik sey-journal.</p>
+            </div>
+            <button onclick="switchTab('articles')" class="mt-6 w-full py-2.5 px-4 rounded-xl bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface text-xs font-semibold transition-all">
+              Buka Pengelola Artikel
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 2: KELOLA KEGIATAN ================= -->
+      <section id="tab-kegiatan" class="space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="font-headline font-bold text-2xl text-on-surface">Kelola Kegiatan Portofolio</h2>
+            <p class="text-xs text-on-surface-variant mt-1">Tambah, sunting, atau hapus kegiatan yang ditampilkan di beranda dan halaman karya.</p>
+          </div>
+          <button onclick="openKegiatanForm()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-semibold shadow-sm hover:bg-primary/90 transition-all">
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            <span>Tambah Kegiatan Baru</span>
+          </button>
+        </div>
+
+        <!-- Form Tambah/Edit Kegiatan (Hidden by default) -->
+        <div id="kegiatan-form-card" class="hidden rounded-2xl bg-surface-container-lowest p-6 shadow-md border border-primary/30 space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-surface-container">
+            <h3 class="font-headline font-bold text-lg text-on-surface" id="kegiatan-form-title">Tambah Kegiatan Baru</h3>
+            <button onclick="closeKegiatanForm()" class="w-8 h-8 rounded-lg hover:bg-surface-container text-secondary flex items-center justify-center">
+              <span class="material-symbols-outlined text-lg">close</span>
+            </button>
+          </div>
+
+          <form id="kegiatan-form" onsubmit="event.preventDefault(); saveKegiatanItem();" class="space-y-4">
+            <input type="hidden" id="kegiatan-id">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Judul Kegiatan *</label>
+                <input type="text" id="kegiatan-title" required class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Misal: Pameran Seni Visual & Arsip">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Kategori Kegiatan *</label>
+                <select id="kegiatan-category" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none">
+                  <option value="Keynote">Keynote / Bicara</option>
+                  <option value="Workshop">Workshop</option>
+                  <option value="Pameran">Pameran</option>
+                  <option value="Instalasi">Instalasi</option>
+                  <option value="Simposium">Simposium</option>
+                  <option value="Residensi">Residensi Seni</option>
+                </select>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Tanggal Pelaksanaan *</label>
+                <input type="text" id="kegiatan-date" required class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Misal: 14 November 2025">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Lokasi / Tempat</label>
+                <input type="text" id="kegiatan-location" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Misal: Galeri Salihara, Jakarta">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Peran Anda</label>
+                <input type="text" id="kegiatan-role" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Misal: Kurator Utama & Dokumentator">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">URL Foto Sampul (Cover)</label>
+                <input type="text" id="kegiatan-image" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="https://images.unsplash.com/...">
+              </div>
+            </div>
+
+            <!-- Upload File Foto Kegiatan -->
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-on-surface">Atau Pilih Foto dari Komputer</label>
+              <input type="file" id="kegiatan-file" accept="image/*" onchange="handleKegiatanFileUpload(event)" class="text-xs text-secondary file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-on-primary hover:file:opacity-90 cursor-pointer">
+            </div>
+
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-on-surface">Deskripsi / Ringkasan Cerita</label>
+              <textarea id="kegiatan-desc" rows="3" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none leading-relaxed" placeholder="Tuliskan pengalaman atau ringkasan kegiatan ini..."></textarea>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-3">
+              <button type="button" onclick="closeKegiatanForm()" class="px-5 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-sm font-semibold transition-all">
+                Batal
+              </button>
+              <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm">
+                Simpan Kegiatan
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Tabel Kegiatan -->
+        <div class="rounded-2xl bg-surface-container-lowest shadow-sm border border-outline-variant/30 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-surface-container-low text-secondary text-xs uppercase tracking-wider font-semibold">
+                  <th class="py-3.5 px-5">Foto & Judul</th>
+                  <th class="py-3.5 px-4">Kategori</th>
+                  <th class="py-3.5 px-4">Tanggal</th>
+                  <th class="py-3.5 px-4">Lokasi</th>
+                  <th class="py-3.5 px-5 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="kegiatan-table-body" class="divide-y divide-surface-container text-sm">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 3: FOTO & PROFIL SAYA ================= -->
+      <section id="tab-profile" class="space-y-6 hidden">
+        <div>
+          <h2 class="font-headline font-bold text-2xl text-on-surface">Ubah Foto & Profil Saya</h2>
+          <p class="text-xs text-on-surface-variant mt-1">Ubah foto potret utama Anda, nama, tagline, dan bio yang tampil di website publik.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Live Preview Avatar Card -->
+          <div class="lg:col-span-4 rounded-2xl bg-surface-container-lowest p-6 shadow-sm border border-outline-variant/30 flex flex-col items-center text-center">
+            <div class="relative w-44 h-44 rounded-full overflow-hidden shadow-lg border-4 border-surface-container-high mb-4 group bg-surface-container">
+              <img id="profile-preview-img" alt="Pratinjau Foto" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80">
+            </div>
+
+            <h3 class="font-headline font-bold text-lg text-on-surface" id="profile-preview-name">Syakilla Purwana</h3>
+            <p class="text-xs text-primary font-semibold mt-0.5" id="profile-preview-title">Multidisciplinary Designer & Writer</p>
+            <p class="text-xs text-secondary mt-3 italic leading-relaxed" id="profile-preview-quote">"when the stars appeared in February, we prayed."</p>
+
+            <div class="mt-5 w-full pt-4 border-t border-surface-container text-xs text-secondary">
+              Foto ini akan langsung diperbarui di beranda dan halaman Tentang Saya.
+            </div>
+          </div>
+
+          <!-- Edit Profile Form -->
+          <div class="lg:col-span-8 rounded-2xl bg-surface-container-lowest p-7 shadow-sm border border-outline-variant/30 space-y-5">
+            <form id="profile-form" onsubmit="event.preventDefault(); saveProfileData();" class="space-y-4">
+              
+              <!-- Foto Section -->
+              <div class="p-4 rounded-xl bg-surface-container-low space-y-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-primary block">Pilihan Foto Profil</span>
+                
+                <div class="space-y-1.5">
+                  <label class="text-xs font-semibold text-on-surface">Unggah dari Komputer / HP</label>
+                  <input type="file" id="profile-file-input" accept="image/*" onchange="handleProfileFileUpload(event)" class="text-xs text-secondary file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-on-primary hover:file:opacity-90 cursor-pointer w-full">
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-xs font-semibold text-on-surface">Atau Masukkan URL Gambar Web</label>
+                  <input type="url" id="profile-photo-url" oninput="updateProfilePreviewUrl(this.value)" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-lowest text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="https://example.com/foto-anda.jpg">
+                </div>
+              </div>
+
+              <!-- Data Teks Profil -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                  <label class="text-xs font-semibold text-on-surface">Nama Lengkap *</label>
+                  <input type="text" id="profile-name" required class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Syakilla Purwana">
+                </div>
+
+                <div class="space-y-1">
+                  <label class="text-xs font-semibold text-on-surface">Gelar / Bidang</label>
+                  <input type="text" id="profile-title" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Multidisciplinary Designer & Writer">
+                </div>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Tagline / Motto Pembuka</label>
+                <input type="text" id="profile-quote" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="when the stars appeared in February, we prayed.">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Bio Singkat *</label>
+                <textarea id="profile-bio" rows="4" required class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none leading-relaxed" placeholder="Tuliskan tentang diri Anda..."></textarea>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <div class="space-y-1">
+                  <label class="text-xs font-semibold text-secondary">Username TikTok</label>
+                  <input type="text" id="profile-tiktok" class="w-full px-3 py-2 rounded-lg bg-surface-container-low text-xs border border-outline-variant/30 outline-none" placeholder="@syakilla.purwana">
+                </div>
+                <div class="space-y-1">
+                  <label class="text-xs font-semibold text-secondary">Username GitHub</label>
+                  <input type="text" id="profile-github" class="w-full px-3 py-2 rounded-lg bg-surface-container-low text-xs border border-outline-variant/30 outline-none" placeholder="@putrisyakillasi">
+                </div>
+                <div class="space-y-1">
+                  <label class="text-xs font-semibold text-secondary">Username Substack</label>
+                  <input type="text" id="profile-substack" class="w-full px-3 py-2 rounded-lg bg-surface-container-low text-xs border border-outline-variant/30 outline-none" placeholder="@seykilla">
+                </div>
+              </div>
+
+              <div class="flex items-center justify-end gap-3 pt-4 border-t border-surface-container">
+                <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm">
+                  Simpan Perubahan Profil & Foto
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 4: KELOLA ARTIKEL / JURNAL ================= -->
+      <section id="tab-articles" class="space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="font-headline font-bold text-2xl text-on-surface">Kelola Artikel & Jurnal</h2>
+            <p class="text-xs text-on-surface-variant mt-1">Tambah, sunting, atau hapus tulisan pemikiran yang diterbitkan.</p>
+          </div>
+          <button onclick="openArticleForm()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-semibold shadow-sm hover:bg-primary/90 transition-all">
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            <span>Tulis Artikel Baru</span>
+          </button>
+        </div>
+
+        <!-- Form Tambah/Edit Artikel (Hidden by default) -->
+        <div id="article-form-card" class="hidden rounded-2xl bg-surface-container-lowest p-6 shadow-md border border-primary/30 space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-surface-container">
+            <h3 class="font-headline font-bold text-lg text-on-surface" id="article-form-title">Tulis Artikel Baru</h3>
+            <button onclick="closeArticleForm()" class="w-8 h-8 rounded-lg hover:bg-surface-container text-secondary flex items-center justify-center">
+              <span class="material-symbols-outlined text-lg">close</span>
+            </button>
+          </div>
+
+          <form id="article-form" onsubmit="event.preventDefault(); saveArticleItem();" class="space-y-4">
+            <input type="hidden" id="article-id">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="md:col-span-2 space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Judul Artikel *</label>
+                <input type="text" id="article-title" required class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Misal: Menemukan Keheningan dalam Desain">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Kategori / Topik *</label>
+                <input type="text" id="article-category" required class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Misal: Esai & Desain">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Tanggal Terbit *</label>
+                <input type="text" id="article-date" required class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Misal: 18 Februari 2025">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Estimasi Waktu Baca</label>
+                <input type="text" id="article-readtime" class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Misal: 5 menit">
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-on-surface">Kutipan / Ringkasan Pembuka (Excerpt) *</label>
+              <textarea id="article-excerpt" rows="3" required class="w-full px-3.5 py-2.5 rounded-xl bg-surface-container-low text-on-surface text-sm border border-outline-variant/30 focus:ring-2 focus:ring-primary/20 outline-none leading-relaxed" placeholder="Ringkasan singkat yang memikat pembaca..."></textarea>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-3">
+              <button type="button" onclick="closeArticleForm()" class="px-5 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface text-sm font-semibold transition-all">
+                Batal
+              </button>
+              <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-semibold hover:bg-primary/90 transition-all shadow-sm">
+                Simpan Artikel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Tabel Artikel -->
+        <div class="rounded-2xl bg-surface-container-lowest shadow-sm border border-outline-variant/30 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-surface-container-low text-secondary text-xs uppercase tracking-wider font-semibold">
+                  <th class="py-3.5 px-5">Judul Artikel</th>
+                  <th class="py-3.5 px-4">Kategori</th>
+                  <th class="py-3.5 px-4">Tanggal Terbit</th>
+                  <th class="py-3.5 px-4">Waktu Baca</th>
+                  <th class="py-3.5 px-5 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="article-table-body" class="divide-y divide-surface-container text-sm">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SECTION 5: KELOLA AKTIVITAS ================= -->
+      <section id="tab-activities" class="space-y-6 hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="font-headline font-bold text-2xl text-on-surface">Kelola Log Aktivitas</h2>
+            <p class="text-xs text-on-surface-variant mt-1">Catat aktivitas terkini, pembaruan status proyek, dan catatan rilis Anda.</p>
+          </div>
+          <button onclick="openActivityForm()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary text-sm font-semibold shadow-sm hover:bg-primary/90 transition-all">
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            <span>Tambah Aktivitas</span>
+          </button>
+        </div>
+
+        <!-- Form Tambah Aktivitas -->
+        <div id="activity-form-card" class="hidden rounded-2xl bg-surface-container-lowest p-6 shadow-md border border-primary/30 space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b border-surface-container">
+            <h3 class="font-headline font-bold text-base text-on-surface">Catat Aktivitas Baru</h3>
+            <button onclick="closeActivityForm()" class="w-7 h-7 rounded-lg hover:bg-surface-container text-secondary flex items-center justify-center">
+              <span class="material-symbols-outlined text-base">close</span>
+            </button>
+          </div>
+
+          <form id="activity-form" onsubmit="event.preventDefault(); saveActivityItem();" class="space-y-3">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="md:col-span-2 space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Judul Aktivitas *</label>
+                <input type="text" id="activity-title" required class="w-full px-3 py-2 rounded-xl bg-surface-container-low text-xs border border-outline-variant/30 outline-none" placeholder="Misal: Menyelesaikan riset materi bambu">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Kategori *</label>
+                <input type="text" id="activity-category" required class="w-full px-3 py-2 rounded-xl bg-surface-container-low text-xs border border-outline-variant/30 outline-none" placeholder="Misal: Riset / Publikasi">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Waktu / Tanggal *</label>
+                <input type="text" id="activity-date" required class="w-full px-3 py-2 rounded-xl bg-surface-container-low text-xs border border-outline-variant/30 outline-none" placeholder="Misal: Hari ini, 15:30">
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-xs font-semibold text-on-surface">Status</label>
+                <select id="activity-status" class="w-full px-3 py-2 rounded-xl bg-surface-container-low text-xs border border-outline-variant/30 outline-none">
+                  <option value="Selesai">Selesai</option>
+                  <option value="Sedang Berjalan">Sedang Berjalan</option>
+                  <option value="Tersimpan">Tersimpan</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2 pt-2">
+              <button type="button" onclick="closeActivityForm()" class="px-4 py-2 rounded-lg bg-surface-container text-xs font-semibold">Batal</button>
+              <button type="submit" class="px-5 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold">Simpan Aktivitas</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Activity Timeline Cards -->
+        <div class="rounded-2xl bg-surface-container-lowest p-6 shadow-sm border border-outline-variant/30 space-y-4">
+          <div id="activity-list" class="space-y-3">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Supabase CDN + Config -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL      = 'https://etstrfgxksmwympjuhhb.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_8IndtVnPl1vP6AVAl1wecg_mF2g8HSv';
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
+  <!-- Dashboard Logic Script -->
+  <script>
+    // ── State ──────────────────────────────────────────────────
+    let appData = { profile: {}, kegiatan: [], articles: [], activities: [] };
+
+    // ── Session Guard ──────────────────────────────────────────
+    (async () => {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        window.location.href = '../login_panel_admin_sey_journal/code.html';
+      }
+    })();
+
+    // ── Tab Switching ──────────────────────────────────────────
+    function switchTab(tabId) {
+      const tabs = ['overview', 'kegiatan', 'profile', 'articles', 'activities'];
+      tabs.forEach(t => {
+        const sec = document.getElementById('tab-' + t);
+        if (sec) sec.classList.add('hidden');
+      });
+      const activeSec = document.getElementById('tab-' + tabId);
+      if (activeSec) activeSec.classList.remove('hidden');
+      document.querySelectorAll('#sidebar-nav .tab-btn').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.classList.add('active');
+          btn.classList.remove('text-on-surface-variant');
+          btn.classList.add('text-on-surface');
+        } else {
+          btn.classList.remove('active');
+          btn.classList.add('text-on-surface-variant');
+          btn.classList.remove('text-on-surface');
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── Toast ──────────────────────────────────────────────────
+    function showToast(message, icon = 'check_circle') {
+      const toast = document.getElementById('toast');
+      const msg   = document.getElementById('toast-message');
+      const ico   = document.getElementById('toast-icon');
+      if (!toast || !msg) return;
+      msg.textContent = message;
+      if (ico) ico.textContent = icon;
+      toast.classList.remove('translate-y-[-20px]', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-[-20px]', 'opacity-0', 'pointer-events-none');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3000);
+    }
+
+    // ── Load All Data from Supabase ────────────────────────────
+    async function loadAll() {
+      try {
+        const [{ data: profile }, { data: kegiatan }, { data: articles }, { data: activities }] = await Promise.all([
+          sb.from('admin_profile').select('*').single(),
+          sb.from('kegiatan').select('*').order('created_at', { ascending: false }),
+          sb.from('articles').select('*').order('created_at', { ascending: false }),
+          sb.from('activities').select('*').order('created_at', { ascending: false })
+        ]);
+        appData.profile    = profile    || {};
+        appData.kegiatan   = kegiatan   || [];
+        appData.articles   = articles   || [];
+        appData.activities = activities || [];
+      } catch(e) {
+        console.warn('Supabase load failed, using empty data', e);
+      }
+      try {
+        localStorage.setItem('sey_journal_data', JSON.stringify({
+          profile: {
+            ...appData.profile,
+            photoUrl: appData.profile.photo_url || appData.profile.photoUrl
+          },
+          kegiatan: appData.kegiatan,
+          articles: appData.articles,
+          activities: appData.activities
+        }));
+      } catch (lsErr) {}
+      renderAll();
+    }
+
+    // ── Render all UI ──────────────────────────────────────────
+    function renderAll() {
+      const p = appData.profile;
+      const kCount = appData.kegiatan.length;
+      const aCount = appData.articles.length;
+      const actCount = appData.activities.length;
+
+      const statK   = document.getElementById('stat-kegiatan-count');
+      const statA   = document.getElementById('stat-article-count');
+      const statAct = document.getElementById('stat-activity-count');
+      const statN   = document.getElementById('stat-profile-name');
+      const sName   = document.getElementById('sidebar-name');
+      const sAvatar = document.getElementById('sidebar-avatar');
+
+      if (statK)   statK.textContent   = kCount;
+      if (statA)   statA.textContent   = aCount;
+      if (statAct) statAct.textContent = actCount;
+      if (statN)   statN.textContent   = p.name || 'Syakilla Purwana';
+      if (sName)   sName.textContent   = p.name || 'Syakilla Purwana';
+      if (sAvatar && p.photo_url) sAvatar.src = p.photo_url;
+
+      renderKegiatanTable();
+      renderProfileForm();
+      renderArticleTable();
+      renderActivityList();
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // 1. KEGIATAN
+    // ══════════════════════════════════════════════════════════
+    function renderKegiatanTable() {
+      const tbody = document.getElementById('kegiatan-table-body');
+      if (!tbody) return;
+      if (!appData.kegiatan.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-secondary text-xs">Belum ada kegiatan tersimpan. Silakan klik "Tambah Kegiatan Baru".</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = appData.kegiatan.map(k => `
+        <tr class="hover:bg-surface-container-low/50 transition-colors">
+          <td class="py-3.5 px-5">
+            <div class="flex items-center gap-3">
+              <img class="w-12 h-12 rounded-xl object-cover shrink-0 bg-surface-container" src="${k.image_url || k.imageUrl || 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80'}" alt="${k.title}">
+              <div class="flex flex-col min-w-0">
+                <span class="font-bold text-on-surface truncate max-w-xs">${k.title}</span>
+                <span class="text-xs text-secondary truncate">${k.role || k.description || ''}</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-surface-container text-primary font-semibold">${k.category}</span>
+          </td>
+          <td class="py-3.5 px-4 text-xs text-on-surface-variant whitespace-nowrap">${k.date}</td>
+          <td class="py-3.5 px-4 text-xs text-secondary truncate max-w-[140px]">${k.location || '-'}</td>
+          <td class="py-3.5 px-5 text-right whitespace-nowrap">
+            <button onclick="editKegiatan('${k.id}')" class="p-1.5 rounded-lg text-primary hover:bg-surface-container transition-colors" title="Sunting">
+              <span class="material-symbols-outlined text-lg">edit</span>
+            </button>
+            <button onclick="deleteKegiatan('${k.id}')" class="p-1.5 rounded-lg text-error hover:bg-error-container transition-colors ml-1" title="Hapus">
+              <span class="material-symbols-outlined text-lg">delete</span>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openKegiatanForm() {
+      document.getElementById('kegiatan-form-title').textContent = 'Tambah Kegiatan Baru';
+      document.getElementById('kegiatan-id').value = '';
+      document.getElementById('kegiatan-form').reset();
+      document.getElementById('kegiatan-form-card').classList.remove('hidden');
+      document.getElementById('kegiatan-form-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeKegiatanForm() {
+      document.getElementById('kegiatan-form-card').classList.add('hidden');
+    }
+
+    function editKegiatan(id) {
+      const item = appData.kegiatan.find(k => k.id === id);
+      if (!item) return;
+      document.getElementById('kegiatan-form-title').textContent = 'Sunting Kegiatan: ' + item.title;
+      document.getElementById('kegiatan-id').value     = item.id;
+      document.getElementById('kegiatan-title').value  = item.title;
+      document.getElementById('kegiatan-category').value = item.category || 'Pameran';
+      document.getElementById('kegiatan-date').value   = item.date;
+      document.getElementById('kegiatan-location').value = item.location || '';
+      document.getElementById('kegiatan-role').value   = item.role || '';
+      document.getElementById('kegiatan-image').value  = item.image_url || item.imageUrl || '';
+      document.getElementById('kegiatan-desc').value   = item.description || item.desc || '';
+      document.getElementById('kegiatan-form-card').classList.remove('hidden');
+      document.getElementById('kegiatan-form-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleKegiatanFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('kegiatan-image').value = e.target.result;
+        showToast('Foto kegiatan dipilih dan siap disimpan!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function saveKegiatanItem() {
+      const id          = document.getElementById('kegiatan-id').value;
+      const title       = document.getElementById('kegiatan-title').value.trim();
+      const category    = document.getElementById('kegiatan-category').value;
+      const date        = document.getElementById('kegiatan-date').value.trim();
+      const location    = document.getElementById('kegiatan-location').value.trim();
+      const role        = document.getElementById('kegiatan-role').value.trim();
+      const image_url   = document.getElementById('kegiatan-image').value.trim() || 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80';
+      const description = document.getElementById('kegiatan-desc').value.trim();
+
+      let error;
+      if (id) {
+        ({ error } = await sb.from('kegiatan').update({ title, category, date, location, role, image_url, description, updated_at: new Date().toISOString() }).eq('id', id));
+      } else {
+        ({ error } = await sb.from('kegiatan').insert({ title, category, date, location, role, image_url, description, status: 'Diterbitkan', views: 0 }));
+      }
+      if (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); return; }
+
+      await loadAll();
+      closeKegiatanForm();
+      showToast('Kegiatan berhasil disimpan!');
+    }
+
+    async function deleteKegiatan(id) {
+      if (!confirm('Yakin ingin menghapus kegiatan ini?')) return;
+      const { error } = await sb.from('kegiatan').delete().eq('id', id);
+      if (error) { showToast('Gagal menghapus: ' + error.message, 'error'); return; }
+      await loadAll();
+      showToast('Kegiatan berhasil dihapus!', 'delete');
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // 2. PROFIL
+    // ══════════════════════════════════════════════════════════
+    function renderProfileForm() {
+      const p = appData.profile;
+      const fields = { 'profile-name': p.name, 'profile-title': p.title, 'profile-quote': p.quote,
+                       'profile-bio': p.bio, 'profile-photo-url': p.photo_url || p.photoUrl,
+                       'profile-tiktok': p.tiktok, 'profile-github': p.github, 'profile-substack': p.substack };
+      Object.entries(fields).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val || '';
+      });
+      const prevName  = document.getElementById('profile-preview-name');
+      const prevTitle = document.getElementById('profile-preview-title');
+      const prevQuote = document.getElementById('profile-preview-quote');
+      const prevImg   = document.getElementById('profile-preview-img');
+      if (prevName)  prevName.textContent  = p.name || 'Nama Anda';
+      if (prevTitle) prevTitle.textContent = p.title || 'Deskripsi Singkat';
+      if (prevQuote) prevQuote.textContent = `"${p.quote || ''}"`;
+      if (prevImg && (p.photo_url || p.photoUrl)) prevImg.src = p.photo_url || p.photoUrl;
+    }
+
+    function updateProfilePreviewUrl(url) {
+      if (url && url.startsWith('http')) {
+        document.getElementById('profile-preview-img').src = url;
+      }
+    }
+
+    function handleProfileFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64 = e.target.result;
+        document.getElementById('profile-preview-img').src = base64;
+        document.getElementById('profile-photo-url').value = base64;
+        showToast('Foto berhasil dimuat! Klik "Simpan Perubahan Profil" untuk menyimpan.');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function saveProfileData() {
+      const payload = {
+        name:      document.getElementById('profile-name').value.trim(),
+        title:     document.getElementById('profile-title').value.trim(),
+        quote:     document.getElementById('profile-quote').value.trim(),
+        bio:       document.getElementById('profile-bio').value.trim(),
+        photo_url: document.getElementById('profile-photo-url').value.trim(),
+        tiktok:    document.getElementById('profile-tiktok').value.trim(),
+        github:    document.getElementById('profile-github').value.trim(),
+        substack:  document.getElementById('profile-substack').value.trim(),
+        updated_at: new Date().toISOString()
+      };
+      const profileId = appData.profile.id;
+      const { error } = profileId
+        ? await sb.from('admin_profile').update(payload).eq('id', profileId)
+        : await sb.from('admin_profile').insert(payload);
+      if (error) { showToast('Gagal menyimpan profil: ' + error.message, 'error'); return; }
+      await loadAll();
+      showToast('Profil & Foto berhasil diperbarui!');
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // 3. ARTIKEL
+    // ══════════════════════════════════════════════════════════
+    function renderArticleTable() {
+      const tbody = document.getElementById('article-table-body');
+      if (!tbody) return;
+      if (!appData.articles.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-secondary text-xs">Belum ada artikel tersimpan.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = appData.articles.map(a => `
+        <tr class="hover:bg-surface-container-low/50 transition-colors">
+          <td class="py-3.5 px-5 font-bold text-on-surface">
+            <span class="truncate block max-w-sm">${a.title}</span>
+            <span class="text-xs text-secondary font-normal line-clamp-1">${a.excerpt || ''}</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-surface-container text-tertiary">${a.category}</span>
+          </td>
+          <td class="py-3.5 px-4 text-xs text-on-surface-variant whitespace-nowrap">${a.date}</td>
+          <td class="py-3.5 px-4 text-xs text-secondary">${a.read_time || a.readTime || '4 menit'}</td>
+          <td class="py-3.5 px-5 text-right whitespace-nowrap">
+            <button onclick="editArticle('${a.id}')" class="p-1.5 rounded-lg text-primary hover:bg-surface-container transition-colors" title="Sunting">
+              <span class="material-symbols-outlined text-lg">edit</span>
+            </button>
+            <button onclick="deleteArticle('${a.id}')" class="p-1.5 rounded-lg text-error hover:bg-error-container transition-colors ml-1" title="Hapus">
+              <span class="material-symbols-outlined text-lg">delete</span>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openArticleForm() {
+      document.getElementById('article-form-title').textContent = 'Tulis Artikel Baru';
+      document.getElementById('article-id').value = '';
+      document.getElementById('article-form').reset();
+      document.getElementById('article-form-card').classList.remove('hidden');
+      document.getElementById('article-form-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeArticleForm() {
+      document.getElementById('article-form-card').classList.add('hidden');
+    }
+
+    function editArticle(id) {
+      const item = appData.articles.find(a => a.id === id);
+      if (!item) return;
+      document.getElementById('article-form-title').textContent = 'Sunting Artikel: ' + item.title;
+      document.getElementById('article-id').value       = item.id;
+      document.getElementById('article-title').value    = item.title;
+      document.getElementById('article-category').value = item.category;
+      document.getElementById('article-date').value     = item.date;
+      document.getElementById('article-readtime').value = item.read_time || item.readTime || '';
+      document.getElementById('article-excerpt').value  = item.excerpt;
+      document.getElementById('article-form-card').classList.remove('hidden');
+      document.getElementById('article-form-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function saveArticleItem() {
+      const id       = document.getElementById('article-id').value;
+      const title    = document.getElementById('article-title').value.trim();
+      const category = document.getElementById('article-category').value.trim();
+      const date     = document.getElementById('article-date').value.trim();
+      const read_time = document.getElementById('article-readtime').value.trim() || '4 menit';
+      const excerpt  = document.getElementById('article-excerpt').value.trim();
+
+      let error;
+      if (id) {
+        ({ error } = await sb.from('articles').update({ title, category, date, read_time, excerpt, updated_at: new Date().toISOString() }).eq('id', id));
+      } else {
+        ({ error } = await sb.from('articles').insert({ title, category, date, read_time, excerpt }));
+      }
+      if (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); return; }
+      await loadAll();
+      closeArticleForm();
+      showToast('Artikel berhasil disimpan!');
+    }
+
+    async function deleteArticle(id) {
+      if (!confirm('Yakin ingin menghapus artikel ini?')) return;
+      const { error } = await sb.from('articles').delete().eq('id', id);
+      if (error) { showToast('Gagal menghapus: ' + error.message, 'error'); return; }
+      await loadAll();
+      showToast('Artikel berhasil dihapus!', 'delete');
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // 4. AKTIVITAS
+    // ══════════════════════════════════════════════════════════
+    function renderActivityList() {
+      const list = document.getElementById('activity-list');
+      if (!list) return;
+      if (!appData.activities.length) {
+        list.innerHTML = `<div class="p-4 text-center text-xs text-secondary">Belum ada aktivitas tercatat.</div>`;
+        return;
+      }
+      list.innerHTML = appData.activities.map(act => `
+        <div class="flex items-center justify-between p-4 rounded-xl bg-surface-container-low hover:bg-surface-container transition-all">
+          <div class="flex items-center gap-3.5">
+            <div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined text-lg">check_circle</span>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-on-surface">${act.title}</h4>
+              <div class="flex items-center gap-2 text-xs text-secondary mt-0.5">
+                <span>${act.date}</span>
+                <span>•</span>
+                <span class="text-tertiary font-medium">${act.category}</span>
+                <span>•</span>
+                <span class="text-primary font-bold">${act.status || 'Selesai'}</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="deleteActivity('${act.id}')" class="p-1 text-secondary hover:text-error transition-colors" title="Hapus Log">
+            <span class="material-symbols-outlined text-lg">delete</span>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function openActivityForm() {
+      document.getElementById('activity-form-card').classList.remove('hidden');
+    }
+
+    function closeActivityForm() {
+      document.getElementById('activity-form-card').classList.add('hidden');
+    }
+
+    async function saveActivityItem() {
+      const title    = document.getElementById('activity-title').value.trim();
+      const category = document.getElementById('activity-category').value.trim();
+      const date     = document.getElementById('activity-date').value.trim();
+      const status   = document.getElementById('activity-status').value;
+
+      const { error } = await sb.from('activities').insert({ title, category, date, status });
+      if (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); return; }
+      await loadAll();
+      closeActivityForm();
+      document.getElementById('activity-form').reset();
+      showToast('Aktivitas berhasil ditambahkan!');
+    }
+
+    async function deleteActivity(id) {
+      const { error } = await sb.from('activities').delete().eq('id', id);
+      if (error) { showToast('Gagal menghapus: ' + error.message, 'error'); return; }
+      await loadAll();
+      showToast('Aktivitas dihapus!', 'delete');
+    }
+
+    // ── Logout ─────────────────────────────────────────────────
+    async function handleLogout() {
+      await sb.auth.signOut();
+      window.location.href = '../login_panel_admin_sey_journal/code.html';
+    }
+
+    // Reset (data ulang dari Supabase seed — tidak hapus DB)
+    function handleResetData() {
+      if (confirm('Muat ulang data dari Supabase?')) {
+        loadAll();
+        showToast('Data dimuat ulang dari Supabase!', 'restart_alt');
+      }
+    }
+
+    // ── Init ───────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAll();
+    });
+  </script>
+</body>
+</html>
