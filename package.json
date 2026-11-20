@@ -5,7 +5,6 @@
   "main": "welcome_page/code.html",
   "scripts": {
     "dev": "live-server --open=welcome_page/code.html --port=3000",
-    "build": "echo 'Static build ready'",
     "start": "live-server --open=welcome_page/code.html --port=3000"
   },
   "keywords": [],
